@@ -118,7 +118,7 @@
 				}
 			},
 
-      handleIceStateChange: function(peerConnection, iceConnectionState) {
+			handleIceStateChange: function(peerConnection, iceConnectionState) {
 				if(peerConnection.rtcUserDeleted) return;
 				if(!peerConnection.rtcIceStateChangeCallback) return;
 				var map = {
@@ -228,7 +228,7 @@
 			return type;
 		},
 
-    rtcGetRemoteDescription: function(pc) {
+		rtcGetRemoteDescription: function(pc) {
 			if(!pc) return 0;
 			var peerConnection = WEBRTC.peerConnectionsMap[pc];
 			var remoteDescription = peerConnection.remoteDescription;
@@ -353,6 +353,12 @@
 				.catch(function(err) {
 					console.error(err);
 				});
+		},
+
+		rtcCloseDataChannel: function(dc) {
+			if (!dc) return;
+			var dataChannel = WEBRTC.dataChannelsMap[dc];
+			dataChannel.close();
 		},
 
 		rtcGetDataChannelLabel: function(dc, pBuffer, size) {

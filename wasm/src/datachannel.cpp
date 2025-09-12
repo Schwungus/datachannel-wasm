@@ -30,6 +30,7 @@
 
 extern "C" {
 extern void rtcDeleteDataChannel(int dc);
+extern void rtcCloseDataChannel(int dc);
 extern int rtcGetDataChannelLabel(int dc, char *buffer, int size);
 extern int rtcGetDataChannelUnordered(int dc);
 extern int rtcGetDataChannelMaxPacketLifeTime(int dc);
@@ -96,14 +97,14 @@ DataChannel::DataChannel(int id) : mId(id), mConnected(false) {
 	mLabel = str;
 }
 
-DataChannel::~DataChannel() { close(); }
+DataChannel::~DataChannel() {
+	close();
+	rtcDeleteDataChannel(mId);
+}
 
 void DataChannel::close() {
 	mConnected = false;
-	if (mId) {
-		rtcDeleteDataChannel(mId);
-		mId = 0;
-	}
+	rtcCloseDataChannel(mId);
 }
 
 bool DataChannel::send(message_variant message) {
