@@ -20,9 +20,8 @@ set(DATACHANNELS_SRC
 	${WASM_SRC_DIR}/websocket.cpp)
 
 add_library(datachannel-wasm STATIC ${DATACHANNELS_SRC})
-set_target_properties(datachannel-wasm PROPERTIES
-	VERSION ${PROJECT_VERSION}
-	CXX_STANDARD 17)
+set_target_properties(datachannel-wasm PROPERTIES VERSION ${PROJECT_VERSION})
+target_compile_features(datachannel-wasm PRIVATE cxx_std_17)
 
 target_include_directories(datachannel-wasm PUBLIC
 	${CMAKE_CURRENT_SOURCE_DIR}/wasm/include)
