@@ -24,10 +24,9 @@ add_library(datachannel-wasm STATIC ${DATACHANNELS_SRC})
 set_target_properties(datachannel-wasm PROPERTIES VERSION ${PROJECT_VERSION})
 target_compile_features(datachannel-wasm PRIVATE cxx_std_17)
 
-target_include_directories(datachannel-wasm PUBLIC
-	${CMAKE_CURRENT_SOURCE_DIR}/wasm/include)
-target_include_directories(datachannel-wasm PRIVATE
-	${CMAKE_CURRENT_SOURCE_DIR}/wasm/include/rtc)
+target_include_directories(datachannel-wasm
+	PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/wasm/include
+	PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/wasm/include/rtc)
 
 target_link_options(datachannel-wasm
 	PRIVATE
