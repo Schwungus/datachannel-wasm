@@ -1,10 +1,11 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.28.0 FATAL_ERROR)
+
 project(datachannel-wasm
 	DESCRIPTION "C++ WebRTC Data Channels for WebAssembly in browsers"
 	VERSION 0.4.0
 	LANGUAGES CXX)
 
-if(NOT CMAKE_SYSTEM_NAME MATCHES "Emscripten")
+if(NOT EMSCRIPTEN)
 	message(FATAL_ERROR "datachannel-wasm must be compiled with Emscripten.")
 endif()
 
@@ -28,7 +29,9 @@ target_include_directories(datachannel-wasm PUBLIC
 target_include_directories(datachannel-wasm PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}/wasm/include/rtc)
 
-target_link_options(datachannel-wasm PUBLIC
-	"SHELL:--js-library \"${CMAKE_CURRENT_SOURCE_DIR}/wasm/js/webrtc.js\""
-	"SHELL:--js-library \"${CMAKE_CURRENT_SOURCE_DIR}/wasm/js/websocket.js\"")
-
+target_link_options(datachannel-wasm
+	PRIVATE
+		"SHELL:-sEXPORTED_RUNTIME_METHODS=HEAPU32,HEAPU8"
+	PUBLIC
+		"SHELL:--js-library \"${CMAKE_CURRENT_SOURCE_DIR}/wasm/js/webrtc.js\""
+	    "SHELL:--js-library \"${CMAKE_CURRENT_SOURCE_DIR}/wasm/js/websocket.js\"")
